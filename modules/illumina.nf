@@ -29,6 +29,20 @@ process readTrimming {
     """
 }
 
+process nextcladeRefDownload {
+    tag params.nextcladeDir
+
+    // publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", mode: "copy"
+
+    output:
+    path "${params.nextcladeDir}", emit: reference
+    
+    script:
+    """
+    nextclade dataset get --name 'sars-cov-2' --output-dir ${params.nextcladeDir}
+    """
+}
+
 process indexReference {
     /**
     * Indexes reference fasta file in the scheme repo using bwa.

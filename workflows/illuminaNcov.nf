@@ -5,6 +5,7 @@ nextflow.preview.dsl = 2
 
 // import modules
 include {articDownloadScheme } from '../modules/artic.nf' 
+include {nextcladeRefDownload} from '../modules/illumina.nf' 
 include {readTrimming} from '../modules/illumina.nf' 
 include {indexReference} from '../modules/illumina.nf'
 include {readMapping} from '../modules/illumina.nf' 
@@ -13,7 +14,7 @@ include {callVariants} from '../modules/illumina.nf'
 include {makeConsensus} from '../modules/illumina.nf' 
 include {callConsensusFreebayes} from '../modules/illumina.nf'
 
-include {pangolinTyping} from '../modules/typing.nf' 
+include {pangolinTyping} from '../modules/typing.nf'
 include {nextclade} from '../modules/typing.nf'
 include {getVariantDefinitions} from '../modules/analysis.nf'
 include {makeReport} from '../modules/analysis.nf'
@@ -44,6 +45,15 @@ workflow prepareReferenceFiles {
       articDownloadScheme()
       articDownloadScheme.out.reffasta
                           .set{ ch_refFasta }
+    }
+
+    if (params.nextcladeRef) {
+      Channel.fromPath(params.nextcladeDir)
+              .set{ ch_ncReference }
+    } else {
+      nextcladeRefDownload()
+      nextcladeRefDownload.out.reference
+                          .set{ ch_ncReference }
     }
 
 
@@ -89,6 +99,7 @@ workflow prepareReferenceFiles {
       bwaindex = ch_preparedRef
       bedfile = ch_bedFile
       reffasta = ch_refFasta
+      nextclade = ch_ncReference
 }
 
 
@@ -97,6 +108,7 @@ workflow sequenceAnalysis {
       ch_filePairs
       ch_preparedRef
       ch_bedFile
+      ch_ncReference
 
     main:
       fastqc(ch_filePairs)
@@ -143,7 +155,7 @@ workflow sequenceAnalysis {
       
       pangolinTyping(makeConsensus.out.consensus_fasta)
       
-      nextclade(makeConsensus.out.consensus_fasta)
+      nextclade(makeConsensus.out.consensus_fasta, ch_ncReference)
 
       getVariantDefinitions()
 
@@ -176,7 +188,7 @@ workflow ncovIllumina {
       prepareReferenceFiles()
       
       // Actually do analysis
-      sequenceAnalysis(ch_filePairs, prepareReferenceFiles.out.bwaindex, prepareReferenceFiles.out.bedfile)
+      sequenceAnalysis(ch_filePairs, prepareReferenceFiles.out.bwaindex, prepareReferenceFiles.out.bedfile, prepareReferenceFiles.out.nextclade)
 
       // Do some typing if we have the correct files
       if ( params.gff ) {

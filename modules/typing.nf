@@ -107,13 +107,12 @@ process pangolinTyping {
 
 process nextclade {
     tag { sampleName }
-
-    label 'nextclade'
     
     publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", mode: 'copy', pattern: "${sampleName}.tsv"
     
     input:
         tuple val(sampleName), path(consensus_fasta)
+        path(reference)
     
     output:
         tuple(sampleName, path("${sampleName}_tree.json"),
@@ -121,7 +120,9 @@ process nextclade {
     
     script:
     """
+    ln -sr ${params.nextcladeDir}/* .
     nextclade --input-fasta ${consensus_fasta} \
+        --input-dataset . \
         --output-tree ${sampleName}_tree.json \
         --output-tsv ${sampleName}.tsv \
         --output-json ${sampleName}.json
