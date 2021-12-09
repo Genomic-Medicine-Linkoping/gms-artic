@@ -6,3 +6,7 @@ results
 work
 environments/.DS_Store
 
+temp
+exp
+results_*
+.singularity
