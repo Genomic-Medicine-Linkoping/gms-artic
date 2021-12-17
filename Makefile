@@ -62,6 +62,7 @@ REPORTING_DIRECTORY = AnalysisReport
 ## and run gms-artic pipeline
 start:
 	$(CONDA_ACTIVATE)
+	rm -rf work
 	nextflow run main.nf -profile singularity --illumina --prefix $(NAME) --directory $(FASTQS) --outdir $(RES_BASEDIR) $(ARGS)
 
 # rm -rf work .singularity/genomicmedicinesweden-gms-artic-illumina-latest.img
