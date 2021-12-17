@@ -64,6 +64,10 @@ start:
 	$(CONDA_ACTIVATE)
 	rm -rf work
 	nextflow run main.nf -profile singularity --illumina --prefix $(NAME) --directory $(FASTQS) --outdir $(RES_BASEDIR) $(ARGS)
+	./bin/joinTables.py \
+	$(RES_BASEDIR)/AnalysisReport/$(NAME)/analysisReport.tsv \
+	$(RES_BASEDIR)/$(NAME).qc.csv \
+	$(RES_BASEDIR)/AnalysisReport/$(NAME)/$(NAME)_fullReport.tsv
 
 # rm -rf work .singularity/genomicmedicinesweden-gms-artic-illumina-latest.img
 # singularity cache clean
