@@ -78,7 +78,7 @@ find_MoIs: search_MoIs_freebayes search_MoIs_ivar
 	cp $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR) $(RES_BASEDIR)/$(REPORTING_DIRECTORY)/$(NAME)
 
 ## search_MoIs_freebayes: Search for substitutions inside FreeBayes vcf results files
-## The vcf results files must reside in: results/ncovIllumina_sequenceAnalysis_callConsensusFreebayes
+## The vcf results files must reside in: results/ncovIllumina_sequenceAnalysis_callConsensusFreebayes (they are so by default)
 ## or defined in VARIANTS_FILES variable in the CLI, e.g.:
 ## make search_MoIs_freebayes VARIANTS_FILES=/data/CGL/gms-artic/results_V23/ncovIllumina_sequenceAnalysis_callConsensusFreebayes
 ##
