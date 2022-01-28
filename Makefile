@@ -106,7 +106,7 @@ search_MoIs_ivar:
 	echo '# Results produced by searching ivar (https://andersen-lab.github.io/ivar/html/index.html) variants output files with commands: "grep -P MN908947.3\t$(MoI_1_ivar) *$(IVAR_QUERY_RESULTS)" and "grep -P MN908947.3\t$(MoI_2_ivar) *$(IVAR_QUERY_RESULTS)"\nSAMPLE\tREGION\tPOS\tREF\tALT\tREF_DP\tREF_RV\tREF_QUAL\tALT_DP\tALT_RV\tALT_QUAL\tALT_FREQ\tTOTAL_DP\tPVAL\tPASS\tGFF_FEATURE\tREF_CODON\tREF_AA\tALT_CODON\tALT_AA' > $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR)
 	grep -P 'MN908947.3\t'$(MoI_1_ivar) $(VARIANTS_FILES_IVAR)/*$(IVAR_QUERY_RESULTS) >> $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR) || true
 	grep -P 'MN908947.3\t'$(MoI_2_ivar) $(VARIANTS_FILES_IVAR)/*$(IVAR_QUERY_RESULTS) >> $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR) || true
-	sed -i -e 's%results_v4.*/ncovIllumina_sequenceAnalysis_callVariants/%%' -e 's%_S.*variants.tsv%%' $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR)
+	sed -i -e 's%$(RES_BASEDIR)/ncovIllumina_sequenceAnalysis_callVariants/%%' -e 's%_S.*variants.tsv%%' $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR)
 
 
 ## archive: Move to larger storage location and create a symbolic link to it
