@@ -10,3 +10,4 @@ temp
 exp
 results_*
 .singularity
+.vscode
