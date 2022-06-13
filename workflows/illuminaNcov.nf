@@ -158,7 +158,8 @@ workflow sequenceAnalysis {
       
       pangolinTyping(makeConsensus.out.consensus_fasta)
       
-      nextclade(makeConsensus.out.consensus_fasta, ch_ncReference)
+      nextclade(makeConsensus.out.consensus_fasta
+                  .join(ch_ncReference))
 
       getVariantDefinitions()
 
