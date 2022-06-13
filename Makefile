@@ -13,7 +13,8 @@ help
 
 CURRENT_CONDA_ENV_NAME = gms-artic
 # Note that the extra activate is needed to ensure that the activate floats env to the front of PATH
-CONDA_ACTIVATE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate ; conda activate $(CURRENT_CONDA_ENV_NAME)
+ACTIVATE_CONDA = source $$(conda info --base)/etc/profile.d/conda.sh
+CONDA_ACTIVATE = $(ACTIVATE_CONDA) ; conda activate ; conda activate $(CURRENT_CONDA_ENV_NAME)
 
 # Change the week number to the same as what is in the Fastq-[week number] directory, e.g.
 # if your fastq files are in Fastq-V45, the row below should be NAME = V45
@@ -108,6 +109,10 @@ search_MoIs_ivar:
 	grep -P 'MN908947.3\t'$(MoI_2_ivar) $(VARIANTS_FILES_IVAR)/*$(IVAR_QUERY_RESULTS) >> $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR) || true
 	sed -i -e 's%$(RES_BASEDIR)/ncovIllumina_sequenceAnalysis_callVariants/%%' -e 's%_S.*variants.tsv%%' $(RES_BASEDIR)/$(MUTATIONS_DIR)/$(MoI_OUTFILE_IVAR)
 
+## update_env: Update conda env based on the env.yml file
+update_env:
+	$(ACTIVATE_CONDA)
+	mamba env update --file env.yml --prune
 
 ## archive: Move to larger storage location and create a symbolic link to it
 archive:
